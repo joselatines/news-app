@@ -1,18 +1,28 @@
-import { useGetUsersQuery } from "./services/users";
+import { useState } from 'react';
+import { useGetUsersQuery } from './services/users';
+import { useGetCountryQuery } from './services/users';
 
 function App() {
-  const { data, error, isLoading, isSuccess, isError } = useGetUsersQuery();
+	const [category, setCategory] = useState('business');
+	const { data, isLoading, isSuccess, isError } = useGetUsersQuery(category);
 
-  return (
-    <div className="App">
-      <h1>Welcome to React Redux Toolkit RTK Query</h1>
-      {isLoading && "Loading..."}
-      {isError && error.message}
-      {isSuccess &&
-        data &&
-        data.map((user, i) => <h1 key={user.id}>{user.name}</h1>)}
-    </div>
-  );
+
+	console.log(data);
+
+	return (
+		<div>
+			{isSuccess && (
+				<>
+					<ul>
+						{data.articles.map((el, i) => (
+							<li key={i}>{el.title}</li>
+						))}
+						<h1>{data.articles.length}</h1>
+					</ul>
+				</>
+			)}
+		</div>
+	);
 }
 
 export default App;
