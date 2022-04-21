@@ -1,27 +1,42 @@
 import { useState } from 'react';
-import { useGetUsersQuery } from './services/users';
-import { useGetCountryQuery } from './services/users';
+import { Container, Row } from 'react-bootstrap';
+import { Navigation } from './components/Navigation';
+import { News } from './components/News';
+
+import { useGetNewsQuery } from './services/getNewsByCategory';
 
 function App() {
+	const categories = [
+		'general',
+		'business',
+		'entertainment',
+		'sports',
+		'health',
+		'science',
+		'technology',
+	];
+
 	const [category, setCategory] = useState('business');
-	const { data, isLoading, isSuccess, isError } = useGetUsersQuery(category);
-
-
-	console.log(data);
+	const { data, isLoading, isSuccess, isError } = useGetNewsQuery(category);
 
 	return (
-		<div>
+		<Container className='p-5'>
+			{isError && <h1>Something went wrong</h1>}
+			{isLoading && <h1>Loading...</h1>}
+
 			{isSuccess && (
 				<>
-					<ul>
-						{data.articles.map((el, i) => (
-							<li key={i}>{el.title}</li>
-						))}
-						<h1>{data.articles.length}</h1>
-					</ul>
+					<Navigation categories={categories} setCategory={setCategory} />
+					<Row>
+						{data.articles
+							.filter(({ urlToImage }) => urlToImage)
+							.map(({ ...data }, i) => (
+								<News key={i} {...data} />
+							))}
+					</Row>
 				</>
 			)}
-		</div>
+		</Container>
 	);
 }
 

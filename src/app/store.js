@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
-import { usersApi } from '../services/users';
+import { newsApi } from '../services/getNewsByCategory';
 
 export const store = configureStore({
 	reducer: {
-		[usersApi.reducerPath]: usersApi.reducer,
+		[newsApi.reducerPath]: newsApi.reducer,
 	},
 	middleware: getDefaultMiddleware =>
-		getDefaultMiddleware().concat(usersApi.middleware),
+		getDefaultMiddleware().concat(newsApi.middleware),
 });
 
 setupListeners(store.dispatch);
