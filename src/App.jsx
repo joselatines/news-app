@@ -16,8 +16,69 @@ function App() {
 		'technology',
 	];
 
-	const [category, setCategory] = useState('business');
-	const { data, isLoading, isSuccess, isError } = useGetNewsQuery(category);
+	const countries = [
+		'ae',
+		'ar',
+		'at',
+		'au',
+		'be',
+		'bg',
+		'br',
+		'ca',
+		'ch',
+		'cn',
+		'co',
+		'cu',
+		'cz',
+		'de',
+		'eg',
+		'fr',
+		'gb',
+		'gr',
+		'hk',
+		'hu',
+		'id',
+		'ie',
+		'il',
+		'in',
+		'it',
+		'jp',
+		'kr',
+		'lt',
+		'lv',
+		'ma',
+		'mx',
+		'my',
+		'ng',
+		'nl',
+		'no',
+		'nz',
+		'ph',
+		'pl',
+		'pt',
+		'ro',
+		'rs',
+		'ru',
+		'sa',
+		'se',
+		'sg',
+		'si',
+		'sk',
+		'th',
+		'tr',
+		'tw',
+		'ua',
+		'us',
+		've',
+		'za',
+	];
+
+	const [category, setCategory] = useState('general');
+	const [country, setCountry] = useState('us');
+	const { data, isLoading, isSuccess, isError } = useGetNewsQuery({
+		country,
+		category,
+	});
 
 	return (
 		<Container className='p-5'>
@@ -26,7 +87,12 @@ function App() {
 
 			{isSuccess && (
 				<>
-					<Navigation categories={categories} setCategory={setCategory} />
+					<Navigation
+						categories={categories}
+						setCategory={setCategory}
+						countries={countries}
+						setCountry={setCountry}
+					/>
 					<Row>
 						{data.articles
 							.filter(({ urlToImage }) => urlToImage)

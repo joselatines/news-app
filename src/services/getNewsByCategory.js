@@ -8,7 +8,8 @@ export const newsApi = createApi({
 	}),
 	endpoints: builder => ({
 		getNews: builder.query({
-			query: category => `?category=${category}&apiKey=${key}`,
+			query: ({ country, category }) =>
+				`?country=${country}&category=${category}&apiKey=${key}`,
 		}),
 	}),
 });
