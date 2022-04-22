@@ -1,22 +1,92 @@
-import 'flag-icons';
+import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import 'flag-icons';
 
-export const Navigation = ({
-	categories,
-	setCategory,
-	countries,
-	setCountry,
-}) => {
-	const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-	const lowerCase = str => str.charAt(0).toLowerCase() + str.slice(1);
+import { capitalize, lowerCase } from '../shared/stringModifiers';
+import { setCategory, setCountry } from '../features/configSlice';
+import { Search } from './Search';
+
+export const Navigation = () => {
+	const dispatch = useDispatch();
+	const country = useSelector(state => state.config.country);
+
+	const categories = [
+		'general',
+		'business',
+		'entertainment',
+		'sports',
+		'health',
+		'science',
+		'technology',
+	];
+
+	const countries = [
+		'ae',
+		'ar',
+		'at',
+		'au',
+		'be',
+		'bg',
+		'br',
+		'ca',
+		'ch',
+		'cn',
+		'co',
+		'cu',
+		'cz',
+		'de',
+		'eg',
+		'fr',
+		'gb',
+		'gr',
+		'hk',
+		'hu',
+		'id',
+		'ie',
+		'il',
+		'in',
+		'it',
+		'jp',
+		'kr',
+		'lt',
+		'lv',
+		'ma',
+		'mx',
+		'my',
+		'ng',
+		'nl',
+		'no',
+		'nz',
+		'ph',
+		'pl',
+		'pt',
+		'ro',
+		'rs',
+		'ru',
+		'sa',
+		'se',
+		'sg',
+		'si',
+		'sk',
+		'th',
+		'tr',
+		'tw',
+		'ua',
+		'us',
+		've',
+		'za',
+	];
 
 	return (
 		<nav>
+			<Search />
 			<Breadcrumb>
 				{categories.map(el => (
 					<Breadcrumb.Item
-						onClick={e => setCategory(lowerCase(e.target.textContent))}
+						onClick={e =>
+							dispatch(setCategory(lowerCase(e.target.textContent)))
+						}
 						key={el}
 					>
 						{capitalize(el)}
@@ -24,25 +94,22 @@ export const Navigation = ({
 				))}
 			</Breadcrumb>
 			<div>
-				<span className='h-4'>Select a country</span>
 				<Dropdown>
 					<Dropdown.Toggle variant='success' id='dropdown-basic'>
-						Select a country <span className='fi fi-gr'></span>
+						Select a country <span className={`fi fi-${country}`}></span>
 					</Dropdown.Toggle>
 
 					<Dropdown.Menu>
-						{countries.map(country => (
+						{countries.map(el => (
 							<Dropdown.Item
-								key={(`country-`, country)}
-								className={country}
-								onClick={e => setCountry(e.target.classList[0])}
+								key={(`country-`, el)}
+								className={el}
+								onClick={e => dispatch(setCountry(e.target.classList[0]))}
 							>
-								<span className={`fi fi-${country}`}></span> - {country}
+								<span className={`fi fi-${el}`}></span> - {el}
 							</Dropdown.Item>
 						))}
 					</Dropdown.Menu>
-
-					<option>Select a country</option>
 				</Dropdown>
 			</div>
 		</nav>

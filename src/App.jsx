@@ -1,84 +1,16 @@
-import { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+
 import { Navigation } from './components/Navigation';
 import { News } from './components/News';
-
 import { useGetNewsQuery } from './services/getNewsByCategory';
+import { capitalize } from './shared/stringModifiers';
 
 function App() {
-	const categories = [
-		'general',
-		'business',
-		'entertainment',
-		'sports',
-		'health',
-		'science',
-		'technology',
-	];
+	const config = useSelector(state => state.config);
 
-	const countries = [
-		'ae',
-		'ar',
-		'at',
-		'au',
-		'be',
-		'bg',
-		'br',
-		'ca',
-		'ch',
-		'cn',
-		'co',
-		'cu',
-		'cz',
-		'de',
-		'eg',
-		'fr',
-		'gb',
-		'gr',
-		'hk',
-		'hu',
-		'id',
-		'ie',
-		'il',
-		'in',
-		'it',
-		'jp',
-		'kr',
-		'lt',
-		'lv',
-		'ma',
-		'mx',
-		'my',
-		'ng',
-		'nl',
-		'no',
-		'nz',
-		'ph',
-		'pl',
-		'pt',
-		'ro',
-		'rs',
-		'ru',
-		'sa',
-		'se',
-		'sg',
-		'si',
-		'sk',
-		'th',
-		'tr',
-		'tw',
-		'ua',
-		'us',
-		've',
-		'za',
-	];
-
-	const [category, setCategory] = useState('general');
-	const [country, setCountry] = useState('us');
-	const { data, isLoading, isSuccess, isError } = useGetNewsQuery({
-		country,
-		category,
-	});
+	const { data, isLoading, isSuccess, isError } = useGetNewsQuery(config);
+	console.log(data, isLoading, isSuccess, isError);
 
 	return (
 		<Container className='p-5'>
@@ -87,12 +19,11 @@ function App() {
 
 			{isSuccess && (
 				<>
-					<Navigation
-						categories={categories}
-						setCategory={setCategory}
-						countries={countries}
-						setCountry={setCountry}
-					/>
+					<Navigation />
+					<h1>
+						{capitalize(config.category)}{' '}
+						{config.search && `- ${config.search}`}
+					</h1>
 					<Row>
 						{data.articles
 							.filter(({ urlToImage }) => urlToImage)
