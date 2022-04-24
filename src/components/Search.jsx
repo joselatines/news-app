@@ -23,6 +23,13 @@ export const Search = () => {
 			>
 				Search
 			</Button>
+			<Button
+				variant='outline-danger'
+				onClick={() => dispatch(setSearch(''))}
+				id='button-addon2'
+			>
+				Reset
+			</Button>
 		</InputGroup>
 	);
 };
